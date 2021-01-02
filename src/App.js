@@ -5,7 +5,7 @@ import Header from './components/header/header.component';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 class App extends React.Component {
     constructor() {
         super();
@@ -16,12 +16,34 @@ class App extends React.Component {
     unsubscribeFromAuth = null;
     componentDidMount() {
         //create an auth listener
-        this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-            this.setState({ currentUser: user });
-            console.log(user);
-            console.log('name: ' + user.displayName);
-            console.log('email: ' + user.email);
-            console.log('uid: ' + user.uid);
+        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+            if (userAuth) {
+                const userRef = await createUserProfileDocument(userAuth);
+                userRef.onSnapshot((snapShot) => {
+                    //print the user data stored in database for user
+                    // NOTE snapshot does not have id
+                    // console.log(snapShot.data());
+                    //save the currentUser id and any data we have from db for user
+                    //-------------------------------------------------------------
+                    this.setState(
+                        {
+                            currentUser: {
+                                id: snapShot.id,
+                                ...snapShot.data(),
+                            },
+                        },
+                        () => {
+                            //we console log after async call of setstate, otherwise we might not get accurate state
+                            // console.log(this.state);
+                        }
+                    );
+                });
+            } else {
+                this.setState({ currentUser: userAuth }, () => {
+                    //we console log after async call of setstate, otherwise we might not get accurate state
+                    // console.log(this.state);
+                });
+            }
         });
     }
     componentWillUnmount() {
