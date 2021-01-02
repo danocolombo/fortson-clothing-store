@@ -34,7 +34,7 @@ class App extends React.Component {
                         },
                         () => {
                             //we console log after async call of setstate, otherwise we might not get accurate state
-                            console.log(this.state);
+                            // console.log(this.state);
                         }
                     );
                 });
