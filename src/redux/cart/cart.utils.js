@@ -12,3 +12,19 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
     //quanity gets added to cartItems when we add the item the first time
     return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    const existingCartItem = cartItems.find(
+        (cartItem) => cartItem.id === cartItemToRemove.id
+    );
+    if (existingCartItem.quantity === 1) {
+        //keep the ones that are not equal to the one being removed (last one)
+        return cartItems.filter(
+            (cartItem) => cartItem.id !== cartItemToRemove.id
+        );
+    }
+    return cartItems.map((cartItem) =>
+        cartItem.id === cartItemToRemove.id
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+    );
+};
