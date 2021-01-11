@@ -8,7 +8,7 @@
     .logo-container {
         height: 100%;
         width: 70px;
-        padding: 25px;
+        padding: 15px;
     }
 
     .options {
@@ -22,5 +22,19 @@
             padding: 10px 15px;
             cursor: pointer;
         }
+    }
+    .logo {
+        width: 70px;
+        height: 70px;
+        position: absolute;
+    }
+    .company-name {
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+            'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-style: italic;
+        font-weight: bolder;
+        font-size: larger;
+        padding-top: 20px;
+        text-align: left;
     }
 }
